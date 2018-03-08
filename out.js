@@ -20,7 +20,7 @@ const biglog = (msg, color) => {
 
 const errorlog = (emsg) => {
 
-  log(`${colorize("Error","red")}: ${colorize(colorize(emsg, "red"), "Yellow")}`);
+  log(`${colorize("Error","red")}: ${colorize(colorize(emsg, "red"), "bgYellowBright")}`);
 
 };
 

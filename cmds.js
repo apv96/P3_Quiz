@@ -114,10 +114,10 @@ exports.testCmd = (rl, id) => {
 
                         if(answer.toLowerCase().trim() === quiz.answer.toLowerCase()){ 
                               log("Su respuesta es correcta.");
-                              biglog("Correcta","green");
+                              log("Correcta","green");
                         }else{
                               log("Su respuesta es incorrecta.");
-                              biglog("Incorrecta","red");
+                              log("Incorrecta","red");
                         }
                               rl.prompt();
                         });
@@ -132,8 +132,7 @@ exports.testCmd = (rl, id) => {
 
 exports.playCmd = rl => {
  let score = 0;
- let toBeResolved = []; // ids de todas las preguntas que existen
- //voy a meter todas las preguntas existentes
+ let toBeResolved = []; 
  let quizzes = model.getAll();
       for (let i = 0; i< quizzes.length; i++){
             toBeResolved.push(i);
@@ -142,36 +141,35 @@ exports.playCmd = rl => {
             const playOne = () => {
                   if(toBeResolved.length === 0){
                         log('No hay mas preguntas');
-                        log(` ${colorize("El resultado obtenido es:","magenta")} ${score}`);
-                        fin();
+                        log(` ${colorize("Su resultado es :","yellow")} ${score}`);
+                        log(`Fin del examen aciertos:`);
+                        log(score, 'green');
                         rl.prompt();
                   }
                   else {
-                        let quiz = quizzes[Math.floor((Math.random()*toBeResolved.length))];
+                        let id = Math.floor((Math.random()*toBeResolved.length));
+                        let quiz = quizzes[id];
                         rl.question(` ${colorize(quiz.question, "red")}${colorize('?' , 'red')} ` , (respuesta) => {
-
+                        //rl.question(quiz.question, respuesta => {
                               if (respuesta.trim().toLowerCase() === quiz.answer.toLowerCase()) {
                                     score++;
-                               log(` ${colorize("correcta","magenta")} ${score} `);
-                               toBeResolved.splice(Math.floor((Math.random()*toBeResolved.length)), 1);
-                               quizzes.splice(Math.floor((Math.random()*toBeResolved.length)), 1);
-                               playOne();
+                               log(` ${colorize("correcta","green")} ${score} `);
+                               toBeResolved.splice(id, 1);
+                               quizzes.splice(id, 1);
+                               playOne(); // recursividad vuelve a empezar desde el principio para preguntar otra vez 
                               }
                               else{
-                              log(`${colorize("incorrecta","magenta")}`);
-                              fin();
+                              log(`${colorize("incorrecta","red")}`);
+                              log(`Fin del examen aciertos:`);
+                              log(score, 'yellow');
                               rl.prompt();
-                                    }
-                                          
+                                    }                                          
                              });
                       }
-      };
-      const  fin =() => {
-            log(`Fin del examen aciertos:`);
-            log(score, 'magenta');
-      }
+            };
       playOne();
       };
+
 exports.creditsCmd = rl => {
       log('Autores de la practica:');
       log('Alberto Pérez Vaquero','green');

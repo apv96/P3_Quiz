@@ -1,61 +1,72 @@
-const fs = require("fs");
+const fs = require("fs")
 const DB_FILENAME = "quizzes.json";
 
+
+
 let quizzes = [
-  {
-    question: "Capital de Italia",
-    answer: "Roma"
-  },
-  {
-    question: "Capital de Francia",
-    answer: "Paris"
-  },
-  {
-    question: "Capital de España",
-    answer: "Madrid"
-  },
-  {
-    question: "Capital de Portugal",
-    answer: "Lisboa"
-  }];
+{
+  question : "Capital de Italia", 
+  answer: "Roma"
+},
+{
+  question : "Capital de Francia", 
+  answer: "Paris"
+},
+{
+  question : "Capital de España", 
+  answer: "Madrid"
+},
+{
+  question : "Capital de Portugal", 
+  answer: "Lisboa"
+}
+];
+
 
 const load = () => {
-  fs.readFile(DB_FILENAME, (err,data) =>  {
-    if(err){
-      if(err.code === "ENOENT"){
-         save();
-         return;
+  fs.readFile(DB_FILENAME, (err, data) => {
+    if (err) {
+      if (err.code ==="ENOENT") {
+        save();
+        return;
+      }
+      throw err;
     }
-    throw err;
-  }
-  let json = JSON.parse(data);
+    let json = JSON.parse(data);
 
-  if (json){
-    quizzes = json;
+    if (json) {
+      quizzes = json;
     }
   });
 };
 
 const save = () => {
-  fs.writeFile(DB_FILENAME, JSON.stringify(quizzes), err => {
-    if(err) throw err;
-  });
+
+  fs.writeFile(DB_FILENAME,
+    JSON.stringify(quizzes),
+    err => {
+      if (err) throw err; 
+    });
 };
 
+
+
+//Devuelve el número total de preguntas existentes
 exports.count = () => quizzes.length;
 
-exports.add = (question, answer) => {
+exports.add = (question, answer ) => {
+
   quizzes.push({
-     question: (question || "").trim(),
+    question: (question || "").trim(),
     answer: (answer || "").trim()
   });
   save();
 };
 
 exports.update = (id, question, answer) => {
-  const quiz = quizzes[id];
-  if(typeof quiz === "undefined"){
-      throw new Error(`El valor del parametro id no es valido`)
+  const quiz =quizzes[id];
+  if (typeof quiz === "undefined") {
+    throw new Error('El valor del parametro id no es valido');
   }
   quizzes.splice(id, 1, {
     question: (question || "").trim(),
@@ -67,21 +78,22 @@ exports.update = (id, question, answer) => {
 exports.getAll = () => JSON.parse(JSON.stringify(quizzes));
 
 exports.getByIndex = id => {
+
   const quiz = quizzes[id];
-  if(typeof quiz === "undefined"){
-      throw new Error(`El valor del parametro id no es valido`)
+  if (typeof quiz == "undefined") {
+    throw new Error ('El valor del parametro id no es valido');
   }
   return JSON.parse(JSON.stringify(quiz));
 };
 
 exports.deleteByIndex = id => {
   const quiz = quizzes[id];
-  if(typeof quiz === "undefined"){
-      throw new Error(`El valor del parametro id no es valido`)
+  if (typeof quiz == "undefined") {
+    throw new Error ('El valor del parametro id no es valido');
   }
-  quizzes.splice(id, 1);
+  quizzes.splice(id,1);
   save();
 };
 
-
+//Carga los quizzes almacenados en el fichero
 load();
