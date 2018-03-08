@@ -158,7 +158,7 @@ exports.playCmd = rl => {
                                playOne();
                               }
                               else{
-                              biglog(`${colorize("incorrecta","magenta")}`);
+                              log(`${colorize("incorrecta","magenta")}`);
                               fin();
                               rl.prompt();
                                     }
@@ -168,7 +168,7 @@ exports.playCmd = rl => {
       };
       const  fin =() => {
             log(`Fin del examen aciertos:`);
-            biglog(score, 'magenta');
+            log(score, 'magenta');
       }
       playOne();
       };
@@ -180,4 +180,5 @@ exports.creditsCmd = rl => {
 
 exports.quitCmd = rl => {
       rl.close();
+      rl.prompt();
 };

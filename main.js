@@ -1,8 +1,6 @@
-const readline = require('readline');
 const {log, biglog, errorlog, colorize} = require("./out");
 const cmds = require("./cmds");
-
-
+const model = require('./model');
 
 
 
@@ -11,7 +9,7 @@ const cmds = require("./cmds");
 biglog('CORE Quiz', 'green');
 
 
-
+const readline = require('readline');
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
